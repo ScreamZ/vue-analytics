@@ -103,8 +103,11 @@ AnalyticsPlugin.install = function (Vue, conf) {
       console.log('Vue router found ! Dispatching views tracking with navigation guards...')
     }
 
+    // Flatten routes name
+    conf.ignoredViews = conf.ignoredViews.map(view => view.toLowerCase())
+
     conf.vueRouter.afterEach(({ name: routeName }) => {
-      if (conf.ignoredViews && config.ignoredViews.indexOf(routeName) !== -1) {
+      if (conf.ignoredViews && conf.ignoredViews.indexOf(routeName.toLowerCase()) !== -1) {
         return
       }
 

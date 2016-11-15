@@ -36,7 +36,7 @@ Vue.use(VueAnalytics, {
   trackingId: '<your_tracking_id>',
   debug: true, // Whether or not display console logs (optional)
   vueRouter: router, // Pass the router instance to automatically sync with router (optional)
-  ignoredViews: ['homepage'], // If router, you can exclude some routes name
+  ignoredViews: ['homepage'], // If router, you can exclude some routes name (case insensitive)
   globalDimensions: [
     {dimension: 1, value: 'MyDimensionValue'},
     {dimension: 2, value: 'AnotherDimensionValue'}
