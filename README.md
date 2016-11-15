@@ -21,10 +21,12 @@ Dispatch events and track views from Vue components.
 
 # Configuration
 
-Just do the following, the configuration of dimensions is optionnal.
+`npm install vue-ua`
+
+And then just do the following, the configuration of dimensions is optional.
 
 ```javascript
-import VueAnalytics from 'vue-analytics'
+import VueAnalytics from 'vue-ua'
 
 Vue.use(VueAnalytics, {
   appName: '<app_name>',
