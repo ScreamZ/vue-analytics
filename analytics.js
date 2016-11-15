@@ -104,7 +104,9 @@ AnalyticsPlugin.install = function (Vue, conf) {
     }
 
     // Flatten routes name
-    conf.ignoredViews = conf.ignoredViews.map(view => view.toLowerCase())
+    if (conf.ignoredView) {
+      conf.ignoredViews = conf.ignoredViews.map(view => view.toLowerCase())
+    }
 
     conf.vueRouter.afterEach(({ name: routeName }) => {
       if (conf.ignoredViews && conf.ignoredViews.indexOf(routeName.toLowerCase()) !== -1) {
