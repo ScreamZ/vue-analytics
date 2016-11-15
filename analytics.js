@@ -5,10 +5,10 @@ export default class AnalyticsPlugin {
 
   trackView (screenName) {
     if (this.conf.debug) {
-      console.log('Dispatching TrackView', {screenName})
+      console.log('Dispatching TrackView', { screenName })
     }
 
-    ga('send', 'screenview', {screenName})
+    ga('send', 'screenview', { screenName })
   }
 
   /**
@@ -22,7 +22,7 @@ export default class AnalyticsPlugin {
    */
   trackEvent (category, action = null, label = null, value = null, fieldsObject = {}) {
     if (this.conf.debug) {
-      console.log('VueAnalytics : Dispatching event', {category, action, label, value, fieldsObject})
+      console.log('VueAnalytics : Dispatching event', { category, action, label, value, fieldsObject })
     }
 
     ga('send', 'event', category, action, label, value, fieldsObject)
@@ -36,9 +36,9 @@ export default class AnalyticsPlugin {
    * @param {int} dimensionNumber
    * @param {string|int} value
    */
-  injectGlobalDimension (dimensionNumber, value)  {
+  injectGlobalDimension (dimensionNumber, value) {
     if (this.conf.debug) {
-      console.log('VueAnalytics : Trying dimension Injection...', {dimensionNumber, value})
+      console.log('VueAnalytics : Trying dimension Injection...', { dimensionNumber, value })
     }
 
     // Test if dimension already registered
@@ -47,7 +47,7 @@ export default class AnalyticsPlugin {
     }
 
     // Otherwise add dimension
-    const newDimension = {dimension: dimensionNumber, value}
+    const newDimension = { dimension: dimensionNumber, value }
 
     this.conf.globalDimensions.push(newDimension)
     ga('set', `dimension${newDimension.dimension}`, newDimension.value)
@@ -56,6 +56,9 @@ export default class AnalyticsPlugin {
 }
 
 AnalyticsPlugin.install = function (Vue, conf) {
+
+  // Default
+  conf.debug = conf.debug || false
 
   if (!conf.trackingId) {
     throw new Error('VueAnalytics : Please provide a "trackingId" from the config')
@@ -67,12 +70,12 @@ AnalyticsPlugin.install = function (Vue, conf) {
 
   // Declare analytics snipper
   (function (i, s, o, g, r, a, m) {
-    i['GoogleAnalyticsObject'] = r;
-    i[r] = i[r] || function () {
-        (i[r].q = i[r].q || []).push(arguments)
-      }, i[r].l = 1 * new Date();
+    i[ 'GoogleAnalyticsObject' ] = r;
+    i[ r ] = i[ r ] || function () {
+        (i[ r ].q = i[ r ].q || []).push(arguments)
+      }, i[ r ].l = 1 * new Date();
     a = s.createElement(o),
-      m = s.getElementsByTagName(o)[0];
+      m = s.getElementsByTagName(o)[ 0 ];
     a.async = 1;
     a.src = g;
     m.parentNode.insertBefore(a, m)
@@ -86,6 +89,22 @@ AnalyticsPlugin.install = function (Vue, conf) {
   if (conf.globalDimensions) {
     conf.globalDimensions.forEach(dimension => {
       ga('set', `dimension${dimension.dimension}`, dimension.value)
+    })
+  }
+
+  // Handle vue-router if defined
+  if (conf.vueRouter) {
+    if (conf.debug) {
+      console.log('Vue router found ! Dispatching views tracking with navigation guards...')
+    }
+
+    conf.vueRouter.afterEach(({ name: routeName }) => {
+      if (conf.ignoredViews && config.ignoredViews.indexOf(routeName) !== -1) {
+        return
+      }
+
+      // Dispatch vue event
+      window.vueAnalytics.trackView(routeName)
     })
   }
 
