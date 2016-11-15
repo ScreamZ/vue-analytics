@@ -3,20 +3,35 @@
   "version": "1.0.1",
   "description": "Help for Google Universal Analytics in Vue application",
   "main": "analytics.js",
-  "keywords": [
-    "analytics",
-    "vuejs",
-    "vue",
-    "google"
-  ],
   "author": "Andréas \"ScreamZ\" Hanss",
   "license": "Apache-2.0",
   "homepage": "https://github.com/ScreamZ/vue-analytics",
+  "scripts": {
+    "build": "webpack"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/ScreamZ/vue-analytics.git"
   },
   "bugs": {
     "url": "https://github.com/ScreamZ/vue-analytics/issues"
-  }
+  },
+  "devDependencies": {
+    "babel-core": "^6.18.2",
+    "babel-loader": "^6.2.7",
+    "babel-preset-latest": "^6.16.0",
+    "babel-preset-stage-2": "^6.18.0"
+  },
+  "keywords": [
+    "analytics",
+    "universal analytics",
+    "google analytics",
+    "vue analytics",
+    "vue js analytics",
+    "vuejs",
+    "tracking",
+    "Vue2",
+    "vue",
+    "google"
+  ]
 }
