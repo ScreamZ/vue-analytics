@@ -1,0 +1,22 @@
+{
+  "name": "vue-ua",
+  "version": "1.0.0",
+  "description": "Help for Google Universal Analytics in Vue application",
+  "main": "analytics.js",
+  "keywords": [
+    "analytics",
+    "vuejs",
+    "vue",
+    "google"
+  ],
+  "author": "Andréas \"ScreamZ\" Hanss",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/ScreamZ/vue-analytics",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ScreamZ/vue-analytics.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ScreamZ/vue-analytics/issues"
+  }
+}
