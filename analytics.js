@@ -68,6 +68,10 @@ AnalyticsPlugin.install = function (Vue, conf) {
     throw new Error('VueAnalytics : Please provide a "appName" from the config')
   }
 
+  if (!conf.appVersion) {
+    throw new Error('VueAnalytics : Please provide a "appVersion" from the config')
+  }
+
   // Declare analytics snipper
   (function (i, s, o, g, r, a, m) {
     i[ 'GoogleAnalyticsObject' ] = r;
@@ -84,6 +88,7 @@ AnalyticsPlugin.install = function (Vue, conf) {
   // Register tracker
   ga('create', conf.trackingId, 'auto')
   ga('set', 'appName', conf.appName)
+  ga('set', 'appVersion', conf.appVersion)
 
   // Create global dimensions
   if (conf.globalDimensions) {

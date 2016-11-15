@@ -21,17 +21,22 @@ Dispatch events and track views from Vue components.
 
 # Configuration
 
-`npm install vue-ua`
+`npm install vue-ua -S` or `yarn add vua-ua` if you use [Yarn package manager](https://yarnpkg.com/)
 
-And then just do the following, the configuration of dimensions is optional.
+Here is an example of configuration, compose with it on your own :
 
 ```javascript
 import VueAnalytics from 'vue-ua'
+import VueRouter from 'vue-router'
+const router = new VueRouter({routes, mode, linkActiveClass})
 
 Vue.use(VueAnalytics, {
   appName: '<app_name>',
+  appVersion: '<app_version>',
   trackingId: '<your_tracking_id>',
-  debug: true, // Wheter or not display console logs
+  debug: true, // Whether or not display console logs (optional)
+  vueRouter: router, // Pass the router instance to automatically sync with router (optional)
+  ignoredViews: ['homepage'], // If router, you can exclude some routes name
   globalDimensions: [
     {dimension: 1, value: 'MyDimensionValue'},
     {dimension: 2, value: 'AnotherDimensionValue'}
@@ -66,18 +71,6 @@ You can also access the instance everywhere using `window.vueAnalytics`, it's us
 
 ## API reference
 
-### injectGlobalDimension (dimensionNumber, value)
-```javascript
-  /**
-   * Inject a new GlobalDimension that will be sent every time.
-   *
-   * Prefer inject through plugin configuration.
-   *
-   * @param {int} dimensionNumber
-   * @param {string|int} value
-   */
-```
-
 ### trackEvent (category, action = null, label = null, value = null, fieldsObject = {})
 ```javascript
   /**
@@ -98,5 +91,17 @@ You can also access the instance everywhere using `window.vueAnalytics`, it's us
    * Dispatch a view using the screen name
    * 
    * @param screenName
+   */
+```
+
+### injectGlobalDimension (dimensionNumber, value)
+```javascript
+  /**
+   * Inject a new GlobalDimension that will be sent every time.
+   *
+   * Prefer inject through plugin configuration.
+   *
+   * @param {int} dimensionNumber
+   * @param {string|int} value
    */
 ```
