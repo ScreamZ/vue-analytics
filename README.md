@@ -59,6 +59,8 @@ export default {
     methods: {
       onClick: function() {
         this.$ua.trackEvent('Banner', 'Click', 'I won money!')
+        // OR
+        this.$analytics.trackEvent('Banner', 'Click', 'I won money!')
       }
     },
     mounted () {
@@ -67,7 +69,7 @@ export default {
 }
 ```
 
-You can also access the instance everywhere using `window.vueAnalytics`, it's useful when you are in the store or somewhere else than components.
+You can also access the instance everywhere using `Vue.analytics`, it's useful when you are in the store or somewhere else than components.
 
 ## API reference
 

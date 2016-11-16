@@ -132,14 +132,12 @@ const install = function (Vue, conf) {
       }
 
       // Dispatch vue event
-      window.vueAnalytics.trackView(routeName)
+      Vue.analytics.trackView(routeName)
     })
   }
 
-  const analyticsPlugin = new AnalyticsPlugin(conf)
-
-  // Add to vue prototype and also window for access through store...
-  Vue.prototype.$ua = window.vueAnalytics = analyticsPlugin
+  // Add to vue prototype and also from globals
+  Vue.prototype.$analytics = Vue.prototype.$ua = Vue.analytics =  new AnalyticsPlugin(conf)
 }
 
 export default { install }
