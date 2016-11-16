@@ -1,11 +1,26 @@
-export default class AnalyticsPlugin {
+let debug = false
+
+/**
+ * Console log depending on config debug mode
+ * @param {...*} message
+ */
+const logDebug = function (message) {
+  if (debug) {
+    console.log(...arguments)
+  }
+}
+
+/**
+ * Plugin main class
+ */
+class AnalyticsPlugin {
   constructor (conf) {
     this.conf = conf
   }
 
   trackView (screenName) {
     if (this.conf.debug) {
-      console.log('Dispatching TrackView', { screenName })
+      logDebug('Dispatching TrackView', { screenName })
     }
 
     ga('send', 'screenview', { screenName })
@@ -22,7 +37,7 @@ export default class AnalyticsPlugin {
    */
   trackEvent (category, action = null, label = null, value = null, fieldsObject = {}) {
     if (this.conf.debug) {
-      console.log('VueAnalytics : Dispatching event', { category, action, label, value, fieldsObject })
+      logDebug('VueAnalytics : Dispatching event', { category, action, label, value, fieldsObject })
     }
 
     ga('send', 'event', category, action, label, value, fieldsObject)
@@ -38,7 +53,7 @@ export default class AnalyticsPlugin {
    */
   injectGlobalDimension (dimensionNumber, value) {
     if (this.conf.debug) {
-      console.log('VueAnalytics : Trying dimension Injection...', { dimensionNumber, value })
+      logDebug('VueAnalytics : Trying dimension Injection...', { dimensionNumber, value })
     }
 
     // Test if dimension already registered
@@ -51,14 +66,21 @@ export default class AnalyticsPlugin {
 
     this.conf.globalDimensions.push(newDimension)
     ga('set', `dimension${newDimension.dimension}`, newDimension.value)
-    console.log('VueAnalytics : Dimension injected')
+    logDebug('VueAnalytics : Dimension injected')
   }
 }
 
-AnalyticsPlugin.install = function (Vue, conf) {
+/**
+ * Installation procedure
+ *
+ * @param Vue
+ * @param conf
+ */
+const install = function (Vue, conf) {
 
   // Default
   conf.debug = conf.debug || false
+  debug = conf.debug // Module debug mode
 
   if (!conf.trackingId) {
     throw new Error('VueAnalytics : Please provide a "trackingId" from the config')
@@ -99,10 +121,6 @@ AnalyticsPlugin.install = function (Vue, conf) {
 
   // Handle vue-router if defined
   if (conf.vueRouter) {
-    if (conf.debug) {
-      console.log('Vue router found ! Dispatching views tracking with navigation guards...')
-    }
-
     // Flatten routes name
     if (conf.ignoredView) {
       conf.ignoredViews = conf.ignoredViews.map(view => view.toLowerCase())
@@ -123,3 +141,5 @@ AnalyticsPlugin.install = function (Vue, conf) {
   // Add to vue prototype and also window for access through store...
   Vue.prototype.$ua = window.vueAnalytics = analyticsPlugin
 }
+
+export default { install }
