@@ -6,7 +6,7 @@ let debug = false
  */
 const logDebug = function (message) {
   if (debug) {
-    console.log(...arguments)
+    console.log('VueAnalytics :', ...arguments)
   }
 }
 
@@ -19,11 +19,11 @@ class AnalyticsPlugin {
   }
 
   trackView (screenName) {
-    if (this.conf.debug) {
-      logDebug('Dispatching TrackView', { screenName })
-    }
+    logDebug('Dispatching TrackView', { screenName })
 
-    ga('send', 'screenview', { screenName })
+    ga('set', 'screenName', screenName) // IMPORTANT for Behavior / overview
+    console.log('screenName')
+    ga('send', 'screenview', { screenName }) // TODO if set is done, screenName optional
   }
 
   /**
@@ -36,11 +36,19 @@ class AnalyticsPlugin {
    * @param fieldsObject
    */
   trackEvent (category, action = null, label = null, value = null, fieldsObject = {}) {
-    if (this.conf.debug) {
-      logDebug('VueAnalytics : Dispatching event', { category, action, label, value, fieldsObject })
-    }
+    logDebug('Dispatching event', { category, action, label, value, fieldsObject })
 
     ga('send', 'event', category, action, label, value, fieldsObject)
+  }
+
+  /**
+   * Track an exception that occurred in the application.
+   *
+   * @param {string} description - Something describing the error (max. 150 Bytes)
+   * @param {boolean} isFatal - Specifies whether the exception was fatal
+   */
+  trackException (description, isFatal = false) {
+    ga('send', 'exception', { 'exDescription': description, 'exFatal': isFatal });
   }
 
   /**
@@ -50,11 +58,10 @@ class AnalyticsPlugin {
    *
    * @param {int} dimensionNumber
    * @param {string|int} value
+   * @throws Error - If already defined
    */
   injectGlobalDimension (dimensionNumber, value) {
-    if (this.conf.debug) {
-      logDebug('VueAnalytics : Trying dimension Injection...', { dimensionNumber, value })
-    }
+    logDebug('Trying dimension Injection...', { dimensionNumber, value })
 
     // Test if dimension already registered
     if (this.conf.globalDimensions.find(el => el.dimension === dimensionNumber)) {
@@ -66,7 +73,7 @@ class AnalyticsPlugin {
 
     this.conf.globalDimensions.push(newDimension)
     ga('set', `dimension${newDimension.dimension}`, newDimension.value)
-    logDebug('VueAnalytics : Dimension injected')
+    logDebug('Dimension injected')
   }
 }
 

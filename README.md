@@ -13,6 +13,10 @@
 
 Dispatch events and track views from Vue components.
 
+<img src="http://occhiobiancogiuseppe.it/wp-content/uploads/2015/09/work_in_progress.png" height=130>
+
+This is a work in progress, this is stable for production but breaking changes may be introduced through minor revisions, but never in patch version.
+
 # Requirements
 
 - **Vue.js.** > 2.0.0
