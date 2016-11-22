@@ -21,9 +21,8 @@ class AnalyticsPlugin {
   trackView (screenName) {
     logDebug('Dispatching TrackView', { screenName })
 
-    ga('set', 'screenName', screenName) // IMPORTANT for Behavior / overview
-    console.log('screenName')
-    ga('send', 'screenview', { screenName }) // TODO if set is done, screenName optional
+    ga('set', 'screenName', screenName)
+    ga('send', 'screenview')
   }
 
   /**
@@ -36,6 +35,7 @@ class AnalyticsPlugin {
    * @param fieldsObject
    */
   trackEvent (category, action = null, label = null, value = null, fieldsObject = {}) {
+    // TODO : FieldObject is full syntax, refactor this
     logDebug('Dispatching event', { category, action, label, value, fieldsObject })
 
     ga('send', 'event', category, action, label, value, fieldsObject)
@@ -114,10 +114,16 @@ const install = function (Vue, conf) {
     m.parentNode.insertBefore(a, m)
   })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
-  // Register tracker
+  // Register tracker, TODO : Set language and refactor in the create statement
   ga('create', conf.trackingId, 'auto')
   ga('set', 'appName', conf.appName)
   ga('set', 'appVersion', conf.appVersion)
+
+  // Set beacon method if available
+  // TODO : Simplify use, because the GA directive already fallback to default if not defined
+  if (!conf.debug && navigator.sendBeacon) {
+    ga('set', 'transport', 'beacon');
+  }
 
   // Create global dimensions
   if (conf.globalDimensions) {

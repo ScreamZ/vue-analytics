@@ -75,6 +75,12 @@ export default {
 
 You can also access the instance everywhere using `Vue.analytics`, it's useful when you are in the store or somewhere else than components.
 
+## Using vue-router guards
+
+You can automatically dispatch new screen views on router change, to do this simply pass the router instance on plugin initialization.
+At the moment, this is using the `route name` to name the HIT, but this is going to be updated to allow you to specify whatever values you wants.
+
+
 ## API reference
 
 ### trackEvent (category, action = null, label = null, value = null, fieldsObject = {})
@@ -109,5 +115,15 @@ You can also access the instance everywhere using `Vue.analytics`, it's useful w
    *
    * @param {int} dimensionNumber
    * @param {string|int} value
+   */
+```
+
+### trackException (description, isFatal = false)
+```javascript
+  /**
+   * Track an exception that occurred in the application.
+   *
+   * @param {string} description - Something describing the error (max. 150 Bytes)
+   * @param {boolean} isFatal - Specifies whether the exception was fatal
    */
 ```
