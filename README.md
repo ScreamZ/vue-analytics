@@ -25,7 +25,7 @@ This is a work in progress, this is stable for production but breaking changes m
 
 # Configuration
 
-`npm install vue-ua -S` or `yarn add vua-ua` if you use [Yarn package manager](https://yarnpkg.com/)
+`npm install vue-ua -S` or `yarn add vue-ua` if you use [Yarn package manager](https://yarnpkg.com/)
 
 Here is an example of configuration, compose with it on your own :
 
