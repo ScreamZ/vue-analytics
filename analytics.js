@@ -135,7 +135,7 @@ const install = function (Vue, conf) {
   // Handle vue-router if defined
   if (conf.vueRouter) {
     // Flatten routes name
-    if (conf.ignoredView) {
+    if (conf.ignoredViews) {
       conf.ignoredViews = conf.ignoredViews.map(view => view.toLowerCase())
     }
 
