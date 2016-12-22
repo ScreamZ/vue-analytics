@@ -127,3 +127,12 @@ At the moment, this is using the `route name` to name the HIT, but this is going
    * @param {boolean} isFatal - Specifies whether the exception was fatal
    */
 ```
+
+### changeSessionLanguage (code)
+```javascript
+  /**
+   * Set the current session language, use this if you change lang in the application after initialization.
+   *
+   * @param {string} code - Must be like in that : http://www.lingoes.net/en/translator/langcode.htm
+   */
+```
