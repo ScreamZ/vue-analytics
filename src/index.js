@@ -1,7 +1,10 @@
-import pluginConfig from './config';
+import pluginConfig from './config'
 import AnalyticsPlugin from './AnalyticsPlugin'
 import * as Utils from './utils'
 
+const defaultConfig = {
+  debug: false
+}
 /**
  * Installation procedure
  *
@@ -9,19 +12,11 @@ import * as Utils from './utils'
  * @param conf
  */
 export const install = function (Vue, conf = {}) {
+  // Apply default configuration
+  conf = { ...defaultConfig, ...conf }
   Utils.checkMandatoryParams(conf)
 
-  conf.debug = conf.debug || false
   pluginConfig.debugMode = conf.debug
-
-  // Experimental
-  if (conf.appType) {
-    switch (conf.appType) {
-      case 'cordova-windows':
-        Utils.cordovaApp.bootstrapWindows()
-        break
-    }
-  }
 
   // Register tracker
   ga('create', conf.trackingId, 'auto', {
@@ -37,23 +32,46 @@ export const install = function (Vue, conf = {}) {
     })
   }
 
+  // Inject global metrics
+  if (conf.globalMetrics) {
+    conf.globalMetrics.forEach(metric => {
+      ga('set', `metric${metric.metric}`, metric.value)
+    })
+  }
+
   // Handle vue-router if defined
   if (conf.vueRouter) {
-    // Flatten routes name
-    if (conf.ignoredViews) {
-      conf.ignoredViews = conf.ignoredViews.map(view => view.toLowerCase())
-    }
-
-    conf.vueRouter.afterEach(({ name: routeName }) => {
-      if (conf.ignoredViews && conf.ignoredViews.indexOf(routeName.toLowerCase()) !== -1) {
-        return
-      }
-
-      // Dispatch vue event
-      Vue.analytics.trackView(routeName)
-    })
+    initVueRouterGuard(Vue, conf.vueRouter, conf.ignoredViews)
   }
 
   // Add to vue prototype and also from globals
   Vue.prototype.$analytics = Vue.prototype.$ua = Vue.analytics = new AnalyticsPlugin(conf)
+}
+
+/**
+ * Init the router guard.
+ *
+ * @param Vue - The Vue instance
+ * @param vueRouter - The Vue router instance to attach guard
+ * @param {string[]} ignoredViews - An array of route name to ignore
+ *
+ * @returns {string[]} The ignored routes names formalized.
+ */
+const initVueRouterGuard = function (Vue, vueRouter, ignoredViews) {
+  // Flatten routes name
+  if (ignoredViews) {
+    ignoredViews = ignoredViews.map(view => view.toLowerCase())
+  }
+
+  vueRouter.afterEach(to => {
+    // Ignore some routes
+    if (ignoredViews && ignoredViews.indexOf(to.name.toLowerCase()) !== -1) {
+      return
+    }
+
+    // Dispatch vue event using meta analytics value if defined otherwise fallback to route name
+    Vue.analytics.trackView(to.meta.analytics || to.name)
+  })
+
+  return ignoredViews;
 }

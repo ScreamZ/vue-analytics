@@ -19,8 +19,12 @@ This is a work in progress, this is stable for production but breaking changes m
 
 # Requirements
 
-- **Vue.js.** > 2.0.0
+- **Vue.js.** >= 2.0.0
 - **Google Analytics account.** To retrieve Data
+
+**Optionnals dependencies**
+
+- **Vue Router** >= 2.x - In order to use auto-tracking
 
 
 # Configuration
@@ -35,16 +39,20 @@ import VueRouter from 'vue-router'
 const router = new VueRouter({routes, mode, linkActiveClass})
 
 Vue.use(VueAnalytics, {
-  appName: '<app_name>',
-  appVersion: '<app_version>',
-  trackingId: '<your_tracking_id>',
-  debug: true, // Whether or not display console logs (optional)
+  appName: '<app_name>', // Mandatory
+  appVersion: '<app_version>', // Mandatory
+  trackingId: '<your_tracking_id>', // Mandatory
+  debug: true, // Whether or not display console logs debugs (optional)
   vueRouter: router, // Pass the router instance to automatically sync with router (optional)
-  ignoredViews: ['homepage'], // If router, you can exclude some routes name (case insensitive)
-  globalDimensions: [
+  ignoredViews: ['homepage'], // If router, you can exclude some routes name (case insensitive) (optional)
+  globalDimensions: [ // Optional
     {dimension: 1, value: 'MyDimensionValue'},
     {dimension: 2, value: 'AnotherDimensionValue'}
-  ]
+  ],
+  globalMetrics: [ // Optional
+      {metric: 1, value: 'MyMetricValue'},
+      {metric: 2, value: 'AnotherMetricValue'}
+    ]
 })
 ```
 
@@ -77,9 +85,23 @@ You can also access the instance everywhere using `Vue.analytics`, it's useful w
 
 ## Using vue-router guards
 
-You can automatically dispatch new screen views on router change, to do this simply pass the router instance on plugin initialization.
-At the moment, this is using the `route name` to name the HIT, but this is going to be updated to allow you to specify whatever values you wants.
+You can automatically dispatch new screen views on router change, to use this feature simply pass the router instance on plugin initialization.
 
+This feature will generate the view name depending on two case :
+- If you defined a meta field for you route named `analytics` this will take the value of this field for the view name.
+- If the plugin don't have a value for the `meta.analytics` it will fallback to the internal route name.
+
+Example : 
+```javascript
+const myRoute = {
+  path: 'myRoute',
+  name: 'MyRouteName',
+  component: SomeComponent,
+  meta: {analytics: 'MyCustomValue'}
+}
+```
+
+This will use `MyCustomValue` as the view name.
 
 ## API reference
 
@@ -115,6 +137,22 @@ At the moment, this is using the `route name` to name the HIT, but this is going
    *
    * @param {int} dimensionNumber
    * @param {string|int} value
+   * 
+   * @throws Error - If already defined
+   */
+```
+
+### injectGlobalMetric (metricNumber, value)
+```javascript
+ /**
+   * Inject a new GlobalMetric that will be sent every time.
+   *
+   * Prefer inject through plugin configuration.
+   *
+   * @param {int} metricNumber
+   * @param {string|int} value
+   * 
+   * @throws Error - If already defined
    */
 ```
 

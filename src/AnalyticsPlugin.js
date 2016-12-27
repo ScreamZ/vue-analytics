@@ -66,6 +66,31 @@ export default class AnalyticsPlugin {
   }
 
   /**
+   * Inject a new GlobalMetric that will be sent every time.
+   *
+   * Prefer inject through plugin configuration.
+   *
+   * @param {int} metricNumber
+   * @param {string|int} value
+   * @throws Error - If already defined
+   */
+  injectGlobalMetric (metricNumber, value) {
+    logDebug('Trying metric Injection...', { metricNumber, value })
+
+    // Test if dimension already registered
+    if (this.conf.globalMetrics.find(el => el.metric === metricNumber)) {
+      throw new Error('VueAnalytics : Metric already registered')
+    }
+
+    // Otherwise add dimension
+    const newMetric = { metric: metricNumber, value }
+
+    this.conf.globalDimensions.push(newMetric)
+    ga('set', `metric${newMetric.metric}`, newMetric.value)
+    logDebug('Metric injected')
+  }
+
+  /**
    * Set the current session language, use this if you change lang in the application after initialization.
    *
    * @param {string} code - Must be like in that : http://www.lingoes.net/en/translator/langcode.htm
