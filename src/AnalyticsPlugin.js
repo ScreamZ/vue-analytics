@@ -1,12 +1,9 @@
 import { logDebug } from './utils'
+import pluginConfig from './config'
 /**
  * Plugin main class
  */
 export default class AnalyticsPlugin {
-  constructor (conf) {
-    this.conf = conf
-  }
-
   trackView (screenName) {
     logDebug('Dispatching TrackView', { screenName })
 
@@ -21,13 +18,12 @@ export default class AnalyticsPlugin {
    * @param action
    * @param label
    * @param value
-   * @param fieldsObject
    */
-  trackEvent (category, action = null, label = null, value = null, fieldsObject = {}) {
-    // TODO : FieldObject is full syntax, refactor this
-    logDebug('Dispatching event', { category, action, label, value, fieldsObject })
+  trackEvent (category, action = null, label = null, value = null) {
+    // TODO : FieldObject is full syntax, refactor this at one moment
+    logDebug('Dispatching event', { category, action, label, value})
 
-    ga('send', 'event', category, action, label, value, fieldsObject)
+    ga('send', 'event', category, action, label, value)
   }
 
   /**
@@ -47,20 +43,21 @@ export default class AnalyticsPlugin {
    *
    * @param {int} dimensionNumber
    * @param {string|int} value
+   *
    * @throws Error - If already defined
    */
   injectGlobalDimension (dimensionNumber, value) {
     logDebug('Trying dimension Injection...', { dimensionNumber, value })
 
     // Test if dimension already registered
-    if (this.conf.globalDimensions.find(el => el.dimension === dimensionNumber)) {
+    if (pluginConfig.globalDimensions.find(el => el.dimension === dimensionNumber)) {
       throw new Error('VueAnalytics : Dimension already registered')
     }
 
     // Otherwise add dimension
     const newDimension = { dimension: dimensionNumber, value }
 
-    this.conf.globalDimensions.push(newDimension)
+    pluginConfig.globalDimensions.push(newDimension)
     ga('set', `dimension${newDimension.dimension}`, newDimension.value)
     logDebug('Dimension injected')
   }
@@ -72,20 +69,21 @@ export default class AnalyticsPlugin {
    *
    * @param {int} metricNumber
    * @param {string|int} value
+   *
    * @throws Error - If already defined
    */
   injectGlobalMetric (metricNumber, value) {
     logDebug('Trying metric Injection...', { metricNumber, value })
 
     // Test if dimension already registered
-    if (this.conf.globalMetrics.find(el => el.metric === metricNumber)) {
+    if (pluginConfig.globalMetrics.find(el => el.metric === metricNumber)) {
       throw new Error('VueAnalytics : Metric already registered')
     }
 
     // Otherwise add dimension
     const newMetric = { metric: metricNumber, value }
 
-    this.conf.globalDimensions.push(newMetric)
+    pluginConfig.globalMetrics.push(newMetric)
     ga('set', `metric${newMetric.metric}`, newMetric.value)
     logDebug('Metric injected')
   }
@@ -96,7 +94,7 @@ export default class AnalyticsPlugin {
    * @param {string} code - Must be like in that : http://www.lingoes.net/en/translator/langcode.htm
    */
   changeSessionLanguage (code) {
-    logDebug('Changing application localisation & language');
+    logDebug(`Changing application localisation & language to ${code}`);
     ga('set', 'language', code);
   }
 }

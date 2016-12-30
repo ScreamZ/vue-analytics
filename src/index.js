@@ -2,50 +2,49 @@ import pluginConfig from './config'
 import AnalyticsPlugin from './AnalyticsPlugin'
 import * as Utils from './utils'
 
-const defaultConfig = {
-  debug: false
-}
 /**
  * Installation procedure
  *
  * @param Vue
- * @param conf
+ * @param initConf
  */
-export const install = function (Vue, conf = {}) {
+const install = function (Vue, initConf = {}) {
   // Apply default configuration
-  conf = { ...defaultConfig, ...conf }
-  Utils.checkMandatoryParams(conf)
+  initConf = { ...pluginConfig, ...initConf }
+  Utils.checkMandatoryParams(initConf)
 
-  pluginConfig.debugMode = conf.debug
+  pluginConfig.debug = initConf.debug
+  pluginConfig.globalDimensions = initConf.globalDimensions
+  pluginConfig.globalMetrics = initConf.globalMetrics
 
   // Register tracker
-  ga('create', conf.trackingId, 'auto', {
+  ga('create', initConf.trackingId, 'auto', {
     transport: 'beacon',
-    appName: conf.appName,
-    appVersion: conf.appVersion
+    appName: initConf.appName,
+    appVersion: initConf.appVersion
   })
 
   // Inject global dimensions
-  if (conf.globalDimensions) {
-    conf.globalDimensions.forEach(dimension => {
+  if (initConf.globalDimensions) {
+    initConf.globalDimensions.forEach(dimension => {
       ga('set', `dimension${dimension.dimension}`, dimension.value)
     })
   }
 
   // Inject global metrics
-  if (conf.globalMetrics) {
-    conf.globalMetrics.forEach(metric => {
+  if (initConf.globalMetrics) {
+    initConf.globalMetrics.forEach(metric => {
       ga('set', `metric${metric.metric}`, metric.value)
     })
   }
 
   // Handle vue-router if defined
-  if (conf.vueRouter) {
-    initVueRouterGuard(Vue, conf.vueRouter, conf.ignoredViews)
+  if (initConf.vueRouter) {
+    initVueRouterGuard(Vue, initConf.vueRouter, initConf.ignoredViews)
   }
 
   // Add to vue prototype and also from globals
-  Vue.prototype.$analytics = Vue.prototype.$ua = Vue.analytics = new AnalyticsPlugin(conf)
+  Vue.prototype.$analytics = Vue.prototype.$ua = Vue.analytics = new AnalyticsPlugin()
 }
 
 /**
@@ -75,3 +74,6 @@ const initVueRouterGuard = function (Vue, vueRouter, ignoredViews) {
 
   return ignoredViews;
 }
+
+// Export module
+export default { install }

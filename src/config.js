@@ -1,3 +1,5 @@
 export default {
-  debugMode: false
+  debug: false,
+  globalDimensions: [],
+  globalMetrics: []
 }
