@@ -11,16 +11,16 @@
 </p>
 <br>
 
-Dispatch events and track views from Vue components.
-
-<img src="http://occhiobiancogiuseppe.it/wp-content/uploads/2015/09/work_in_progress.png" height=130>
-
-This is a work in progress, this is stable for production but breaking changes may be introduced through minor revisions, but never in patch version.
+This plugin will helps you in your common analytics tasks. Dispatching events, register some dimensions, metric and track views from Vue components.
 
 # Requirements
 
-- **Vue.js.** > 2.0.0
-- **Google Analytics account.** To retrieve Data
+- **Vue.js.** >= 2.0.0
+- **Google Analytics account.** To send data to
+
+**Optionnals dependencies**
+
+- **Vue Router** >= 2.x - In order to use auto-tracking of screens
 
 
 # Configuration
@@ -35,22 +35,26 @@ import VueRouter from 'vue-router'
 const router = new VueRouter({routes, mode, linkActiveClass})
 
 Vue.use(VueAnalytics, {
-  appName: '<app_name>',
-  appVersion: '<app_version>',
-  trackingId: '<your_tracking_id>',
-  debug: true, // Whether or not display console logs (optional)
+  appName: '<app_name>', // Mandatory
+  appVersion: '<app_version>', // Mandatory
+  trackingId: '<your_tracking_id>', // Mandatory
+  debug: true, // Whether or not display console logs debugs (optional)
   vueRouter: router, // Pass the router instance to automatically sync with router (optional)
-  ignoredViews: ['homepage'], // If router, you can exclude some routes name (case insensitive)
-  globalDimensions: [
+  ignoredViews: ['homepage'], // If router, you can exclude some routes name (case insensitive) (optional)
+  globalDimensions: [ // Optional
     {dimension: 1, value: 'MyDimensionValue'},
     {dimension: 2, value: 'AnotherDimensionValue'}
-  ]
+  ],
+  globalMetrics: [ // Optional
+      {metric: 1, value: 'MyMetricValue'},
+      {metric: 2, value: 'AnotherMetricValue'}
+    ]
 })
 ```
 
 # Documentation
 
-Once registered you can access vue analytics in your components like this :
+Once the configuration is completed, you can access vue analytics instance in your components like that :
 
 ```javascript
 export default {
@@ -73,17 +77,35 @@ export default {
 }
 ```
 
-You can also access the instance everywhere using `Vue.analytics`, it's useful when you are in the store or somewhere else than components.
+You can also access the instance anywhere whenever you imported `Vue` by using `Vue.analytics`. It is especially useful when you are in a store module or
+somewhere else than a component's scope.
 
-## Using vue-router guards
+## Sync analytics with your router
 
-You can automatically dispatch new screen views on router change, to do this simply pass the router instance on plugin initialization.
-At the moment, this is using the `route name` to name the HIT, but this is going to be updated to allow you to specify whatever values you wants.
+Thanks to vue-router guards, you can automatically dispatch new screen views on router change !
+To use this feature, you just need to inject the router instance on plugin initialization.
 
+This feature will generate the view name according to a priority rule :
+- If you defined a meta field for you route named `analytics` this will take the value of this field for the view name.
+- Otherwise, if the plugin don't have a value for the `meta.analytics` it will fallback to the internal route name.
+
+Most of time the second case is enough, but sometimes you want to have more control on what is sent, this is where the first rule shine.
+
+Example : 
+```javascript
+const myRoute = {
+  path: 'myRoute',
+  name: 'MyRouteName',
+  component: SomeComponent,
+  meta: {analytics: 'MyCustomValue'}
+}
+```
+
+> This will use `MyCustomValue` as the view name.
 
 ## API reference
 
-### trackEvent (category, action = null, label = null, value = null, fieldsObject = {})
+### trackEvent (category, action = null, label = null, value = null)
 ```javascript
   /**
    * Dispatch an analytics event.
@@ -93,7 +115,6 @@ At the moment, this is using the `route name` to name the HIT, but this is going
    * @param action
    * @param label
    * @param value
-   * @param fieldsObject
    */
 ```
 
@@ -115,6 +136,22 @@ At the moment, this is using the `route name` to name the HIT, but this is going
    *
    * @param {int} dimensionNumber
    * @param {string|int} value
+   * 
+   * @throws Error - If already defined
+   */
+```
+
+### injectGlobalMetric (metricNumber, value)
+```javascript
+ /**
+   * Inject a new GlobalMetric that will be sent every time.
+   *
+   * Prefer inject through plugin configuration.
+   *
+   * @param {int} metricNumber
+   * @param {string|int} value
+   * 
+   * @throws Error - If already defined
    */
 ```
 
@@ -125,5 +162,14 @@ At the moment, this is using the `route name` to name the HIT, but this is going
    *
    * @param {string} description - Something describing the error (max. 150 Bytes)
    * @param {boolean} isFatal - Specifies whether the exception was fatal
+   */
+```
+
+### changeSessionLanguage (code)
+```javascript
+  /**
+   * Set the current session language, use this if you change lang in the application after initialization.
+   *
+   * @param {string} code - Must be like in that : http://www.lingoes.net/en/translator/langcode.htm
    */
 ```

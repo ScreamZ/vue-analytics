@@ -3,11 +3,11 @@ var webpack = require('webpack')
 
 module.exports = {
   entry: [
-    './analytics.js'
+    './src/index.js'
   ],
   output: {
-    filename: 'vue-analytics.min.js',
-    libraryTarget: 'umd'
+    filename: 'dist/vue-analytics.min.js',
+    libraryTarget: 'commonjs2'
   },
   plugins: [
     new webpack.optimize.UglifyJsPlugin({
