@@ -1,6 +1,6 @@
 {
   "name": "vue-ua",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Help for Google Universal Analytics in Vue application",
   "main": "./dist/vue-analytics.min.js",
   "author": "Andréas \"ScreamZ\" Hanss",
