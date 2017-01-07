@@ -1,6 +1,6 @@
 {
   "name": "vue-ua",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Help for Google Universal Analytics in Vue application",
   "main": "./dist/vue-analytics.min.js",
   "author": "Andréas \"ScreamZ\" Hanss",
@@ -20,7 +20,8 @@
     "babel-core": "^6.18.2",
     "babel-loader": "^6.2.7",
     "babel-preset-latest": "^6.16.0",
-    "babel-preset-stage-2": "^6.18.0"
+    "babel-preset-stage-2": "^6.18.0",
+    "webpack": "^1.14.0"
   },
   "keywords": [
     "analytics",
