@@ -31,12 +31,14 @@ const install = function (Vue, initConf = {}) {
   pluginConfig.globalDimensions = initConf.globalDimensions
   pluginConfig.globalMetrics = initConf.globalMetrics
 
-  // Register tracker
+  // register tracker
   ga('create', initConf.trackingId, 'auto', {
     transport: 'beacon',
-    appName: initConf.appName,
-    appVersion: initConf.appVersion
   })
+
+  // set app name and version
+  ga('set', 'appName', initConf.appName)
+  ga('set', 'appVersion', initConf.appVersion)
 
   // Inject global dimensions
   if (initConf.globalDimensions) {
