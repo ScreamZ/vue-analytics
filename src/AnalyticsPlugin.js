@@ -21,7 +21,7 @@ export default class AnalyticsPlugin {
    */
   trackEvent (category, action = null, label = null, value = null) {
     // TODO : FieldObject is full syntax, refactor this at one moment
-    logDebug('Dispatching event', { category, action, label, value})
+    logDebug('Dispatching event', { category, action, label, value })
 
     ga('send', 'event', category, action, label, value)
   }
@@ -34,6 +34,29 @@ export default class AnalyticsPlugin {
    */
   trackException (description, isFatal = false) {
     ga('send', 'exception', { 'exDescription': description, 'exFatal': isFatal });
+  }
+
+  /**
+   * Track an user timing to measure periods of time.
+   *
+   * @param {string} timingCategory - A string for categorizing all user timing variables into logical groups (e.g. 'JS Dependencies').
+   * @param {string} timingVar -  A string to identify the variable being recorded (e.g. 'load').
+   * @param {number} timingValue - The number of milliseconds in elapsed time to report to Google Analytics (e.g. 20).
+   * @param {string|null} timingLabel -  A string that can be used to add flexibility in visualizing user timings in the reports (e.g. 'Google CDN').
+   */
+  trackTiming (timingCategory, timingVar, timingValue, timingLabel = null) {
+    let conf = {
+      hitType: 'timing',
+      timingCategory,
+      timingVar,
+      timingValue
+    }
+    if (timingLabel) {
+      conf.timingLabel = timingLabel;
+    }
+
+    logDebug('Dispatching timing', conf)
+    ga('send', conf);
   }
 
   /**

@@ -127,6 +127,17 @@ const myRoute = {
    */
 ```
 
+### trackTiming (timingCategory, timingVar, timingValue, timingLabel = null)
+```javascript
+/**
+   * Track an user timing to measure periods of time.
+   *
+   * @param {string} timingCategory - A string for categorizing all user timing variables into logical groups (e.g. 'JS Dependencies').
+   * @param {string} timingVar -  A string to identify the variable being recorded (e.g. 'load').
+   * @param {number} timingValue - The number of milliseconds in elapsed time to report to Google Analytics (e.g. 20).
+   * @param {string|null} timingLabel -  A string that can be used to add flexibility in visualizing user timings in the reports (e.g. 'Google CDN').
+   */
+```
 ### injectGlobalDimension (dimensionNumber, value)
 ```javascript
   /**
