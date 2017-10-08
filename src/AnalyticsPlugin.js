@@ -4,11 +4,21 @@ import pluginConfig from './config'
  * Plugin main class
  */
 export default class AnalyticsPlugin {
-  trackView (screenName) {
-    logDebug('Dispatching TrackView', { screenName })
 
-    ga('set', 'screenName', screenName)
-    ga('send', 'screenview')
+  /**
+   * @description Track a screen or page
+   * @param {any} name
+   * @param {boolean} [trackPage=false]
+   * @memberof AnalyticsPlugin
+   */
+  trackView (name, trackPage = false) {
+    logDebug('Dispatching TrackView', { name, trackPage })
+
+    const hitViewName = trackPage ? 'page' : 'screenName'
+    const hitViewType = trackPage ? 'pageview' : 'screenview'
+
+    ga('set', hitViewName, name)
+    ga('send', hitViewType)
   }
 
   /**
@@ -33,6 +43,8 @@ export default class AnalyticsPlugin {
    * @param {boolean} isFatal - Specifies whether the exception was fatal
    */
   trackException (description, isFatal = false) {
+    logDebug('Dispatching exception event', { description, isFatal })
+
     ga('send', 'exception', { 'exDescription': description, 'exFatal': isFatal });
   }
 
