@@ -7,7 +7,9 @@
   "license": "Apache-2.0",
   "homepage": "https://github.com/ScreamZ/vue-analytics",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "test": "mocha --opts .mocha",
+    "test:watch": "npm t -- --watch"
   },
   "repository": {
     "type": "git",
@@ -21,6 +23,11 @@
     "babel-loader": "^6.2.7",
     "babel-preset-latest": "^6.16.0",
     "babel-preset-stage-2": "^6.18.0",
+    "babel-register": "^6.26.0",
+    "chai": "^4.1.2",
+    "mocha": "^4.0.1",
+    "sinon": "^4.0.1",
+    "sinon-chai": "^2.14.0",
     "webpack": "^1.14.0"
   },
   "keywords": [
