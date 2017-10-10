@@ -8,6 +8,8 @@
   "homepage": "https://github.com/ScreamZ/vue-analytics",
   "scripts": {
     "build": "webpack",
+    "lint": "standard",
+    "pretest": "npm run lint",
     "test": "mocha --opts .mocha",
     "test:watch": "npm t -- --watch"
   },
@@ -28,6 +30,7 @@
     "mocha": "^4.0.1",
     "sinon": "^4.0.1",
     "sinon-chai": "^2.14.0",
+    "standard": "^10.0.3",
     "webpack": "^1.14.0"
   },
   "keywords": [
@@ -41,5 +44,16 @@
     "Vue2",
     "vue",
     "google"
-  ]
+  ],
+  "standard": {
+    "ignore": [
+      "/node_modules/",
+      "webpack.config.js"
+    ],
+    "globals": [
+      "expect",
+      "ga"
+    ],
+    "env": "mocha"
+  }
 }

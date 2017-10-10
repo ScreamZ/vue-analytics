@@ -1,10 +1,10 @@
 import { logDebug } from './utils'
 import pluginConfig from './config'
+
 /**
  * Plugin main class
  */
 export default class AnalyticsPlugin {
-
   /**
    * @description Track a screen or page
    * @param {any} name
@@ -45,7 +45,7 @@ export default class AnalyticsPlugin {
   trackException (description, isFatal = false) {
     logDebug('Dispatching exception event', { description, isFatal })
 
-    ga('send', 'exception', { 'exDescription': description, 'exFatal': isFatal });
+    ga('send', 'exception', { 'exDescription': description, 'exFatal': isFatal })
   }
 
   /**
@@ -63,12 +63,13 @@ export default class AnalyticsPlugin {
       timingVar,
       timingValue
     }
+
     if (timingLabel) {
-      conf.timingLabel = timingLabel;
+      conf.timingLabel = timingLabel
     }
 
     logDebug('Dispatching timing', conf)
-    ga('send', conf);
+    ga('send', conf)
   }
 
   /**
@@ -129,7 +130,7 @@ export default class AnalyticsPlugin {
    * @param {string} code - Must be like in that : http://www.lingoes.net/en/translator/langcode.htm
    */
   changeSessionLanguage (code) {
-    logDebug(`Changing application localisation & language to ${code}`);
-    ga('set', 'language', code);
+    logDebug(`Changing application localisation & language to ${code}`)
+    ga('set', 'language', code)
   }
 }

@@ -9,7 +9,7 @@ import * as Utils from './utils'
  * @param initConf
  */
 const install = function (Vue, initConf = {}) {
-
+  /*eslint-disable*/
   // Load the analytics snippet
   (function (i, s, o, g, r, a, m) {
     i[ 'GoogleAnalyticsObject' ] = r;
@@ -22,6 +22,7 @@ const install = function (Vue, initConf = {}) {
     a.src = g;
     m.parentNode.insertBefore(a, m)
   })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+  /*eslint-enable*/
 
   // Apply default configuration
   initConf = { ...pluginConfig, ...initConf }
@@ -33,7 +34,7 @@ const install = function (Vue, initConf = {}) {
 
   // register tracker
   ga('create', initConf.trackingId, 'auto', {
-    transport: 'beacon',
+    transport: 'beacon'
   })
 
   // set app name and version
@@ -88,7 +89,7 @@ const initVueRouterGuard = function (Vue, vueRouter, ignoredViews) {
     Vue.analytics.trackView(to.meta.analytics || to.name)
   })
 
-  return ignoredViews;
+  return ignoredViews
 }
 
 // Export module

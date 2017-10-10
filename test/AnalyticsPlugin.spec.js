@@ -4,7 +4,6 @@ import pluginConfig from '../src/config'
 import AnalyticsPlugin from '../src/AnalyticsPlugin'
 
 describe('AnalyticsPlugin', () => {
-
   const analyticsPlugin = new AnalyticsPlugin()
 
   beforeEach(() => {
@@ -53,7 +52,6 @@ describe('AnalyticsPlugin', () => {
         expect(ga.secondCall.args).to.eql(['send', 'pageview'])
       })
     })
-
   })
 
   describe('#trackEvent', () => {
@@ -86,8 +84,10 @@ describe('AnalyticsPlugin', () => {
 
   describe('#trackTiming', () => {
     const conf = {
-      hitType: 'timing', timingCategory: 'myTiming',
-      timingVar: 'testVar', timingValue: 1234,
+      hitType: 'timing',
+      timingCategory: 'myTiming',
+      timingVar: 'testVar',
+      timingValue: 1234,
       timingLabel: 'myTimingLabel'
     }
 
@@ -129,7 +129,7 @@ describe('AnalyticsPlugin', () => {
       })
 
       it('should log event', () => {
-        expect(utils.logDebug.firstCall.args).to.eql(['Trying dimension Injection...', { dimensionNumber: 123, value: 'abc'}])
+        expect(utils.logDebug.firstCall.args).to.eql(['Trying dimension Injection...', { dimensionNumber: 123, value: 'abc' }])
         expect(utils.logDebug.secondCall.args).to.eql(['Dimension injected'])
       })
 
@@ -161,7 +161,7 @@ describe('AnalyticsPlugin', () => {
       })
 
       it('should log event', () => {
-        expect(utils.logDebug.firstCall.args).to.eql(['Trying metric Injection...', { metricNumber: 123, value: 'abc'}])
+        expect(utils.logDebug.firstCall.args).to.eql(['Trying metric Injection...', { metricNumber: 123, value: 'abc' }])
         expect(utils.logDebug.secondCall.args).to.eql(['Metric injected'])
       })
 
@@ -198,5 +198,4 @@ describe('AnalyticsPlugin', () => {
       expect(ga).to.have.been.calledWith('set', 'language', 'pt-BR')
     })
   })
-
 })
