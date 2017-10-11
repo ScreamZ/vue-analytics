@@ -11,7 +11,7 @@ export const logDebug = function (message) {
 }
 
 export const checkMandatoryParams = function (params) {
-  const mandatoryParams = [ 'trackingId', 'appName', 'appVersion' ];
+  const mandatoryParams = [ 'trackingId', 'appName', 'appVersion' ]
 
   mandatoryParams.forEach(el => {
     if (!params[ el ]) throw new Error(`VueAnalytics : Please provide a "${el}" from the config.`)
@@ -24,7 +24,7 @@ export const checkMandatoryParams = function (params) {
 export const cordovaApp = {
   bootstrapWindows () {
     // Disable activeX object to make Analytics.js use XHR, or something else
-    window.ActiveXObject = undefined;
+    window.ActiveXObject = undefined
     ga('set', 'checkProtocolTask', null)
-  },
+  }
 }

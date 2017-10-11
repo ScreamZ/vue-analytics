@@ -1,0 +1,7 @@
+--bail
+--colors
+--sort
+--check-leaks
+--inline-diffs
+--require babel-register
+--require ./test/specHelper.js
