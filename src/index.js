@@ -57,7 +57,7 @@ const install = function (Vue, initConf = {}) {
 
   // Handle vue-router if defined
   if (initConf.vueRouter) {
-    initVueRouterGuard(Vue, initConf.vueRouter, initConf.ignoredViews)
+    initVueRouterGuard(Vue, initConf.vueRouter, initConf.ignoredViews, initConf.trackPage)
   }
 
   // Add to vue prototype and also from globals
@@ -73,7 +73,7 @@ const install = function (Vue, initConf = {}) {
  *
  * @returns {string[]} The ignored routes names formalized.
  */
-const initVueRouterGuard = function (Vue, vueRouter, ignoredViews) {
+const initVueRouterGuard = function (Vue, vueRouter, ignoredViews, trackPage) {
   // Flatten routes name
   if (ignoredViews) {
     ignoredViews = ignoredViews.map(view => view.toLowerCase())
@@ -86,7 +86,7 @@ const initVueRouterGuard = function (Vue, vueRouter, ignoredViews) {
     }
 
     // Dispatch vue event using meta analytics value if defined otherwise fallback to route name
-    Vue.analytics.trackView(to.meta.analytics || to.name)
+    Vue.analytics.trackView(to.meta.analytics || to.name, trackPage)
   })
 
   return ignoredViews

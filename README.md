@@ -41,6 +41,7 @@ Vue.use(VueAnalytics, {
   debug: true, // Whether or not display console logs debugs (optional)
   vueRouter: router, // Pass the router instance to automatically sync with router (optional)
   ignoredViews: ['homepage'], // If router, you can exclude some routes name (case insensitive) (optional)
+  trackPage: true|false, // Whether you want page changes to be recorded as pageviews (website) or screenviews (app), default: false
   globalDimensions: [ // Optional
     {dimension: 1, value: 'MyDimensionValue'},
     {dimension: 2, value: 'AnotherDimensionValue'}
@@ -118,12 +119,13 @@ const myRoute = {
    */
 ```
 
-### trackView (screenName)
+### trackView (screenName, trackPage = false)
 ```javascript
  /**
    * Dispatch a view using the screen name
    * 
-   * @param screenName
+   * @param screenName {string}
+   * @param trackPage {boolean} - Whether you want the dispatched view to be recorded as pageview (website) or screenview (app)
    */
 ```
 
