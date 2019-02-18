@@ -3,6 +3,6 @@ export default {
   globalDimensions: [],
   globalMetrics: [],
   createOptions: {
-    transport: 'beacon',
+    transport: 'beacon'
   }
 }
