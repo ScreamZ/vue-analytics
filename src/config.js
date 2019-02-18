@@ -1,5 +1,8 @@
 export default {
   debug: false,
   globalDimensions: [],
-  globalMetrics: []
+  globalMetrics: [],
+  createOptions: {
+    transport: 'beacon'
+  }
 }
