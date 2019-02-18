@@ -33,9 +33,7 @@ const install = function (Vue, initConf = {}) {
   pluginConfig.globalMetrics = initConf.globalMetrics
 
   // register tracker
-  ga('create', initConf.trackingId, 'auto', {
-    transport: 'beacon'
-  })
+  ga('create', initConf.trackingId, 'auto', initConf.createOptions)
 
   // set app name and version
   ga('set', 'appName', initConf.appName)
