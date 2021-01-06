@@ -146,7 +146,7 @@ export default class AnalyticsPlugin {
     const newContentGrouping = { contentGrouping: contentGroupingNumber, value }
 
     pluginConfig.globalContentGroupings.push(newContentGrouping)
-    ga('set', `contentGrouping${newContentGrouping.contentGrouping}`, newContentGrouping.value)
+    ga('set', `contentGroup${newContentGrouping.contentGrouping}`, newContentGrouping.value)
     logDebug('ContentGrouping injected')
   }
 

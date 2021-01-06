@@ -57,7 +57,7 @@ const install = function (Vue, initConf = {}) {
   // Inject global content groupings
   if (initConf.globalContentGroupings) {
     initConf.globalContentGroupings.forEach(contentGrouping => {
-      ga('set', `metric${contentGrouping.contentGrouping}`, contentGrouping.value)
+      ga('set', `contentGroup${contentGrouping.contentGrouping}`, contentGrouping.value)
     })
   }
 
