@@ -1,7 +1,7 @@
 import sinon from 'sinon'
-import * as utils from '../src/utils'
-import pluginConfig from '../src/config'
 import AnalyticsPlugin from '../src/AnalyticsPlugin'
+import pluginConfig from '../src/config'
+import * as utils from '../src/utils'
 
 describe('AnalyticsPlugin', () => {
   const analyticsPlugin = new AnalyticsPlugin()
@@ -177,6 +177,38 @@ describe('AnalyticsPlugin', () => {
     describe('when existing metric', () => {
       beforeEach(() => {
         pluginConfig.globalMetrics = [{ dimension: 123, value: 'abc' }]
+      })
+
+      it('should throw exception', () => {
+        expect(() => analyticsPlugin.injectGlobalDimension(123, 'abc')).to.throw(Error)
+      })
+    })
+  })
+
+  describe('#injectGlobalContentGrouping', () => {
+    describe('when new contentGrouping', () => {
+      beforeEach(() => {
+        pluginConfig.globalContentGroupings = []
+        analyticsPlugin.injectGlobalContentGrouping(123, 'abc')
+      })
+
+      it('should log event', () => {
+        expect(utils.logDebug.firstCall.args).to.eql(['Trying contentGrouping Injection...', { contentGroupingNumber: 123, value: 'abc' }])
+        expect(utils.logDebug.secondCall.args).to.eql(['Content Grouping injected'])
+      })
+
+      it('should push a new contentGrouping to plugin configuration', () => {
+        expect(pluginConfig.globalContentGroupings).to.eql([{ contentGrouping: 123, value: 'abc' }])
+      })
+
+      it('should set ga contentGrouping', () => {
+        expect(ga).to.have.been.calledWith('set', 'contentGrouping123', 'abc')
+      })
+    })
+
+    describe('when existing contentGrouping', () => {
+      beforeEach(() => {
+        pluginConfig.globalContentGroupings = [{ dimension: 123, value: 'abc' }]
       })
 
       it('should throw exception', () => {

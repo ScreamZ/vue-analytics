@@ -43,7 +43,7 @@ Vue.use(VueAnalytics, {
   ignoredViews: ['homepage'], // If router, you can exclude some routes name (case insensitive) (optional)
   trackPage: true|false, // Whether you want page changes to be recorded as pageviews (website) or screenviews (app), default: false
   createOptions: { // Optional, Option when creating GA tracker, ref: https://developers.google.com/analytics/devguides/collection/analyticsjs/field-reference
-    siteSpeedSampleRate: 10, 
+    siteSpeedSampleRate: 10,
   },
   globalDimensions: [ // Optional
     {dimension: 1, value: 'MyDimensionValue'},
@@ -52,6 +52,11 @@ Vue.use(VueAnalytics, {
   globalMetrics: [ // Optional
       {metric: 1, value: 'MyMetricValue'},
       {metric: 2, value: 'AnotherMetricValue'}
+    ]
+  ],
+  globalContentGroupings: [ // Optional
+      {contentGrouping: 1, value: 'MyContentGroupingValue'},
+      {contentGrouping: 2, value: 'AnotherContentGroupingValue'}
     ]
 })
 ```
@@ -95,7 +100,7 @@ This feature will generate the view name according to a priority rule :
 
 Most of time the second case is enough, but sometimes you want to have more control on what is sent, this is where the first rule shine.
 
-Example : 
+Example :
 ```javascript
 const myRoute = {
   path: 'myRoute',
@@ -126,7 +131,7 @@ const myRoute = {
 ```javascript
  /**
    * Dispatch a view using the screen name
-   * 
+   *
    * @param screenName {string}
    * @param trackPage {boolean} - Whether you want the dispatched view to be recorded as pageview (website) or screenview (app)
    */
@@ -152,7 +157,7 @@ const myRoute = {
    *
    * @param {int} dimensionNumber
    * @param {string|int} value
-   * 
+   *
    * @throws Error - If already defined
    */
 ```
@@ -166,7 +171,21 @@ const myRoute = {
    *
    * @param {int} metricNumber
    * @param {string|int} value
-   * 
+   *
+   * @throws Error - If already defined
+   */
+```
+
+### injectGlobalContentGrouping (contentGroupingNumber, value)
+```javascript
+ /**
+   * Inject a new GlobalContentGrouping that will be sent every time.
+   *
+   * Prefer inject through plugin configuration.
+   *
+   * @param {int} contentGroupingNumber
+   * @param {string|int} value
+   *
    * @throws Error - If already defined
    */
 ```
