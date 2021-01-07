@@ -1,6 +1,6 @@
-import pluginConfig from './config'
-import AnalyticsPlugin from './AnalyticsPlugin'
-import * as Utils from './utils'
+import AnalyticsPlugin from './AnalyticsPlugin';
+import pluginConfig from './config';
+import * as Utils from './utils';
 
 /**
  * Installation procedure
@@ -31,6 +31,7 @@ const install = function (Vue, initConf = {}) {
   pluginConfig.debug = initConf.debug
   pluginConfig.globalDimensions = initConf.globalDimensions
   pluginConfig.globalMetrics = initConf.globalMetrics
+  pluginConfig.globalContentGroups = initConf.globalContentGroups
 
   // register tracker
   ga('create', initConf.trackingId, 'auto', initConf.createOptions)
@@ -50,6 +51,13 @@ const install = function (Vue, initConf = {}) {
   if (initConf.globalMetrics) {
     initConf.globalMetrics.forEach(metric => {
       ga('set', `metric${metric.metric}`, metric.value)
+    })
+  }
+
+  // Inject global content groupings
+  if (initConf.globalContentGroups) {
+    initConf.globalContentGroups.forEach(contentGroup => {
+      ga('set', `contentGroup${contentGroup.contentGroup}`, contentGroup.value)
     })
   }
 

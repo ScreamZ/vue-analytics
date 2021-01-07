@@ -1,5 +1,5 @@
-import { logDebug } from './utils'
 import pluginConfig from './config'
+import { logDebug } from './utils'
 
 /**
  * Plugin main class
@@ -122,6 +122,32 @@ export default class AnalyticsPlugin {
     pluginConfig.globalMetrics.push(newMetric)
     ga('set', `metric${newMetric.metric}`, newMetric.value)
     logDebug('Metric injected')
+  }
+
+  /**
+   * Inject a new GlobalContentGroups that will be sent every time.
+   *
+   * Prefer inject through plugin configuration.
+   *
+   * @param {int} contentGroupNumber
+   * @param {string|int} value
+   *
+   * @throws Error - If already defined
+   */
+  injectGlobalContentGroups (contentGroupNumber, value) {
+    logDebug('Trying Content Grouping Injection...', { contentGroupNumber, value })
+
+    // Test if dimension already registered
+    if (pluginConfig.globalContentGroups.find(el => el.contentGroup === contentGroupNumber)) {
+      throw new Error('VueAnalytics : ContentGroup already registered')
+    }
+
+    // Otherwise add dimension
+    const newContentGroup = { contentGroup: contentGroupNumber, value }
+
+    pluginConfig.globalContentGroups.push(newContentGroup)
+    ga('set', `contentGroup${newContentGroup.contentGroup}`, newContentGroup.value)
+    logDebug('ContentGroup injected')
   }
 
   /**
