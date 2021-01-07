@@ -125,29 +125,29 @@ export default class AnalyticsPlugin {
   }
 
   /**
-   * Inject a new GlobalContentGrouping that will be sent every time.
+   * Inject a new GlobalContentGroups that will be sent every time.
    *
    * Prefer inject through plugin configuration.
    *
-   * @param {int} contentGroupingNumber
+   * @param {int} contentGroupNumber
    * @param {string|int} value
    *
    * @throws Error - If already defined
    */
-  injectGlobalContentGrouping (contentGroupingNumber, value) {
-    logDebug('Trying Content Grouping Injection...', { contentGroupingNumber, value })
+  injectGlobalContentGroups (contentGroupNumber, value) {
+    logDebug('Trying Content Grouping Injection...', { contentGroupNumber, value })
 
     // Test if dimension already registered
-    if (pluginConfig.globalContentGroupings.find(el => el.contentGrouping === contentGroupingNumber)) {
-      throw new Error('VueAnalytics : ContentGrouping already registered')
+    if (pluginConfig.globalContentGroups.find(el => el.contentGroup === contentGroupNumber)) {
+      throw new Error('VueAnalytics : ContentGroup already registered')
     }
 
     // Otherwise add dimension
-    const newContentGrouping = { contentGrouping: contentGroupingNumber, value }
+    const newContentGroup = { contentGroup: contentGroupNumber, value }
 
-    pluginConfig.globalContentGroupings.push(newContentGrouping)
-    ga('set', `contentGroup${newContentGrouping.contentGrouping}`, newContentGrouping.value)
-    logDebug('ContentGrouping injected')
+    pluginConfig.globalContentGroups.push(newContentGroup)
+    ga('set', `contentGroup${newContentGroup.contentGroup}`, newContentGroup.value)
+    logDebug('ContentGroup injected')
   }
 
   /**

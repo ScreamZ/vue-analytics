@@ -185,30 +185,30 @@ describe('AnalyticsPlugin', () => {
     })
   })
 
-  describe('#injectGlobalContentGrouping', () => {
-    describe('when new contentGrouping', () => {
+  describe('#injectGlobalContentGroups', () => {
+    describe('when new contentGroup', () => {
       beforeEach(() => {
-        pluginConfig.globalContentGroupings = []
-        analyticsPlugin.injectGlobalContentGrouping(123, 'abc')
+        pluginConfig.globalContentGroups = []
+        analyticsPlugin.injectGlobalContentGroups(123, 'abc')
       })
 
       it('should log event', () => {
-        expect(utils.logDebug.firstCall.args).to.eql(['Trying contentGrouping Injection...', { contentGroupingNumber: 123, value: 'abc' }])
+        expect(utils.logDebug.firstCall.args).to.eql(['Trying contentGroup Injection...', { contentGroupNumber: 123, value: 'abc' }])
         expect(utils.logDebug.secondCall.args).to.eql(['Content Grouping injected'])
       })
 
-      it('should push a new contentGrouping to plugin configuration', () => {
-        expect(pluginConfig.globalContentGroupings).to.eql([{ contentGrouping: 123, value: 'abc' }])
+      it('should push a new contentGroup to plugin configuration', () => {
+        expect(pluginConfig.globalContentGroups).to.eql([{ contentGroup: 123, value: 'abc' }])
       })
 
-      it('should set ga contentGrouping', () => {
-        expect(ga).to.have.been.calledWith('set', 'contentGrouping123', 'abc')
+      it('should set ga contentGroup', () => {
+        expect(ga).to.have.been.calledWith('set', 'contentGroup123', 'abc')
       })
     })
 
-    describe('when existing contentGrouping', () => {
+    describe('when existing contentGroup', () => {
       beforeEach(() => {
-        pluginConfig.globalContentGroupings = [{ dimension: 123, value: 'abc' }]
+        pluginConfig.globalContentGroups = [{ dimension: 123, value: 'abc' }]
       })
 
       it('should throw exception', () => {

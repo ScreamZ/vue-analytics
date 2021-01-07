@@ -31,7 +31,7 @@ const install = function (Vue, initConf = {}) {
   pluginConfig.debug = initConf.debug
   pluginConfig.globalDimensions = initConf.globalDimensions
   pluginConfig.globalMetrics = initConf.globalMetrics
-  pluginConfig.globalContentGroupings = initConf.globalContentGroupings
+  pluginConfig.globalContentGroups = initConf.globalContentGroups
 
   // register tracker
   ga('create', initConf.trackingId, 'auto', initConf.createOptions)
@@ -55,9 +55,9 @@ const install = function (Vue, initConf = {}) {
   }
 
   // Inject global content groupings
-  if (initConf.globalContentGroupings) {
-    initConf.globalContentGroupings.forEach(contentGrouping => {
-      ga('set', `contentGroup${contentGrouping.contentGrouping}`, contentGrouping.value)
+  if (initConf.globalContentGroups) {
+    initConf.globalContentGroups.forEach(contentGroup => {
+      ga('set', `contentGroup${contentGroup.contentGroup}`, contentGroup.value)
     })
   }
 

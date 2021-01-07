@@ -2,7 +2,7 @@ export default {
   debug: false,
   globalDimensions: [],
   globalMetrics: [],
-  globalContentGroupings: [],
+  globalContentGroups: [],
   createOptions: {
     transport: 'beacon'
   }

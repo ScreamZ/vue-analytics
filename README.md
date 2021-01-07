@@ -54,9 +54,9 @@ Vue.use(VueAnalytics, {
       {metric: 2, value: 'AnotherMetricValue'}
     ]
   ],
-  globalContentGroupings: [ // Optional
-      {contentGrouping: 1, value: 'MyContentGroupingValue'},
-      {contentGrouping: 2, value: 'AnotherContentGroupingValue'}
+  globalContentGroups: [ // Optional
+      {contentGroup: 1, value: 'MyContentGroupValue'},
+      {contentGroup: 2, value: 'AnotherContentGroupValue'}
     ]
 })
 ```
@@ -176,14 +176,14 @@ const myRoute = {
    */
 ```
 
-### injectGlobalContentGrouping (contentGroupingNumber, value)
+### injectGlobalContentGroups (contentGroupNumber, value)
 ```javascript
  /**
-   * Inject a new GlobalContentGrouping that will be sent every time.
+   * Inject a new GlobalContentGroups that will be sent every time.
    *
    * Prefer inject through plugin configuration.
    *
-   * @param {int} contentGroupingNumber
+   * @param {int} contentGroupNumber
    * @param {string|int} value
    *
    * @throws Error - If already defined
